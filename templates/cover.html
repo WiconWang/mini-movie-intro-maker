@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  font-family: 'Smiley Sans', 'PingFang SC', 'Noto Sans SC', sans-serif;
+}
+.cover {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  background: url('BG_IMAGE_PLACEHOLDER') center/cover no-repeat;
+}
+/* 渐变暗化层 — 底部更暗 */
+.darken {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.0) 20%,
+    rgba(0,0,0,0.0) 50%,
+    rgba(0,0,0,0.45) 80%,
+    rgba(0,0,0,0.65) 100%
+  );
+}
+/* 文字区域 — 左侧留白区 */
+.content {
+  position: absolute;
+  left: 100px;
+  top: 260px;
+  z-index: 2;
+  max-width: calc(100% - 200px);  /* 左右各留 100px 边距 */
+  overflow: hidden;
+}
+/* 主标题 */
+.main-title {
+  font-size: 120px;
+  font-weight: 900;
+  color: TITLE_COLOR_PLACEHOLDER;
+  text-shadow:
+    3px 3px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    0 0 30px TITLE_COLOR_PLACEHOLDER60;
+  letter-spacing: 6px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+/* 副标题 */
+.sub-title {
+  font-size: 56px;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-shadow:
+    2px 2px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    0 0 20px rgba(0,0,0,0.8);
+  margin-top: 16px;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+/* 装饰线 */
+.deco-line {
+  width: 200px;
+  height: 3px;
+  background: TITLE_COLOR_PLACEHOLDER;
+  margin-top: 20px;
+  box-shadow: 0 0 10px TITLE_COLOR_PLACEHOLDER80;
+}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="darken"></div>
+  <div class="content">
+    <div class="main-title">TITLE_PLACEHOLDER</div>
+    <div class="sub-title">SUBTITLE_PLACEHOLDER</div>
+    <div class="deco-line"></div>
+  </div>
+</div>
+</body>
+</html>
