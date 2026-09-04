@@ -1,43 +1,16 @@
 # 运行时产物
-downloads/
-.cache/
-output/
 temp/
+output/
 
-# Python 编译缓存与虚拟环境
+# Python 缓存
 __pycache__/
 *.py[cod]
-.venv/
-venv/
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-
-# IDE 配置
-.vscode/*
-!.vscode/extensions.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/settings.json
-.idea/
-*.iml
-.vs/
-
-# Claude Code 本地配置（harness）
-/.claude/settings.local.json
-
-# CodeGraph 本地索引
-.codegraph/
 
 # 操作系统文件
 .DS_Store
 Thumbs.db
 
-# 探测临时文件
-*.tmp
-
 # 生成的图片（保留模板和脚本）
 *.jpg
 *.png
-!templates/*
+!skills/*/templates/*

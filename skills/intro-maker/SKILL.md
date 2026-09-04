@@ -49,11 +49,12 @@ context:
 ## 脚本用法
 
 ```bash
-python3 scripts/make_cover.py \
+# 从项目根目录执行
+python3 skills/intro-maker/scripts/make_cover.py \
   --bg /path/to/screenshot.png \
   --title "原神精简版本" \
   --subtitle "V1.6 盛夏！海岛？大冒险！" \
-  --output cover.jpg
+  --output output/cover.jpg
 ```
 
 ## 智能布局规则
@@ -105,17 +106,20 @@ python3 scripts/make_cover.py \
 - 背景图必须 ≥ 1920×1080，低于则报错
 - 高于则按 `background: cover` 裁剪（短边对齐+居中裁剪）
 
-## 文件结构
+## 项目结构
 
 ```
 mini-movie-intro-maker/
-├── SKILL.md                  # 本文件
-├── scripts/
-│   └── make_cover.py         # 封面生成脚本
-├── templates/
-│   └── cover.html            # HTML 模板
-└── references/
-    └── examples.md           # 示例输出
+├── .gitignore
+├── skills/
+│   └── intro-maker/
+│       ├── SKILL.md            # Skill 定义
+│       ├── scripts/
+│       │   └── make_cover.py   # 封面生成脚本
+│       └── templates/
+│           └── cover.html      # HTML 模板
+├── docs/                       # 文档
+└── output/                     # 生成的封面图
 ```
 
 ## 字体
