@@ -1,6 +1,6 @@
 ---
 name: mini-movie-intro-maker
-description: Use when generating video cover images and markdown summaries for MiniMovie. Overlays artistic text on game screenshots.
+description: Use when generating video cover images and markdown summaries for MiniMovie. Overlays artistic text on game artwork (official posters, PV stills, or screenshots).
 version: 0.12.0
 author: Wicon
 license: MIT
@@ -34,7 +34,7 @@ context:
 ## 核心流程
 
 ```
-用户提供背景图 + 标题信息
+调用方提供背景图（底图）+ 标题信息
          ↓
     分析图片特征
     ├─ 计算内容密度（边缘 + 颜色变化）
@@ -52,11 +52,13 @@ context:
 ```bash
 # 从项目根目录执行
 python3 skills/intro-maker/scripts/make_cover.py \
-  --bg /path/to/screenshot.png \
+  --bg /path/to/background.jpg \
   --title "原神精简版本" \
   --subtitle "V1.6 盛夏！海岛？大冒险！" \
   --output output/cover.jpg
 ```
+
+> 本 skill 不规定背景图与产出的落盘位置——独立使用时自定；作为 game-storyline-pipeline 一环时，底图取 `$MMM_DATA_ROOT/<game>/covers-official/`（官方海报，只读），成品写 `$MMM_DATA_ROOT/<game>/covers/`，命名与流转规则见该管线的 `references/stage-cover.md`。
 
 ## 智能布局规则
 
