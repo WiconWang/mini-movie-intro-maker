@@ -58,7 +58,12 @@ python3 skills/intro-maker/scripts/make_cover.py \
   --output output/cover.jpg
 ```
 
-> 本 skill 不规定背景图与产出的落盘位置——独立使用时自定；作为 game-storyline-pipeline 一环时，底图取 `$MMM_DATA_ROOT/<game>/covers-official/`（官方海报，只读），成品写 `$MMM_DATA_ROOT/<game>/covers/`，命名与流转规则见该管线的 `references/stage-cover.md`。
+> 本 skill 不规定背景图与产出的落盘位置——独立使用时自定；作为 game-storyline-pipeline 一环时，底图由用户每次显式 `--bg` 指定（官方海报，不入库），成品登记为版本级 cover/outro 资产：
+> ```bash
+> mmm add-asset --game <code> --version <no> --slug <quest_slug> \
+>     --kind cover --src output/cover.jpg
+> ```
+> 登记后 `task-create --claim` 自动以 asset_id 引用（落 `{game}/{version}/_version/cover/`）。
 
 ## 智能布局规则
 
