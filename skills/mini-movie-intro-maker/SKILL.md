@@ -51,7 +51,7 @@ context:
 
 ```bash
 # 从项目根目录执行
-python3 skills/intro-maker/scripts/make_cover.py \
+python3 skills/mini-movie-intro-maker/scripts/make_cover.py \
   --bg /path/to/background.jpg \
   --title "原神精简版本" \
   --subtitle "V1.6 盛夏！海岛？大冒险！" \
@@ -157,7 +157,7 @@ python3 skills/intro-maker/scripts/make_cover.py \
 mini-movie-intro-maker/
 ├── .gitignore
 ├── skills/
-│   └── intro-maker/
+│   └── mini-movie-intro-maker/
 │       ├── SKILL.md            # Skill 定义
 │       ├── scripts/
 │       │   └── make_cover.py   # 封面生成脚本
