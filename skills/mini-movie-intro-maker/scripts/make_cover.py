@@ -32,7 +32,7 @@ SHORT_TITLE_H_RATIO = 0.30   # 短标题字号封顶 = 图高 × 此比例
 COLOR_BRIGHT_LUMA = 150      # 有效亮度 ≥ 此值为「亮区」（之上再按色散分白/深）
 COLOR_MID_LUMA = 100         # 有效亮度 ≥ 此值为「中灰」→ 白字；低于则进暗区 accent
 COLOR_BUSY_SPREAD = 38       # 色散 ≥ 此值为「杂乱」→ 亮区杂时强制白字兜底
-ACCENT_ON_DARK = True        # 暗区是否用亮 accent（False 则暗区也回白字，更素净）
+ACCENT_ON_DARK = False       # 暗区是否用亮 accent（False 则暗区也回白字，更素净）
 SUB_LIGHTEN_RATIO = 0.35     # 副标题往白调比例（<0.5 则与主标题色差更小）
 SCENE_SAT_FLOOR = 0.68       # 同色系文字色饱和度下限（越高越醒目）
 SCENE_SAT_BOOST = 1.7        # 场景饱和度放大倍率（低饱和场景也能长出鲜明色相）
