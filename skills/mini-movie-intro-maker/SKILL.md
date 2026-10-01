@@ -50,8 +50,8 @@ context:
 ## 脚本用法
 
 ```bash
-# 从项目根目录执行
-python3 skills/mini-movie-intro-maker/scripts/make_cover.py \
+# 从项目根目录执行（解释器见「运行环境」，MMM_INTRO_PYTHON 未设时退回 python3）
+"${MMM_INTRO_PYTHON:-python3}" skills/mini-movie-intro-maker/scripts/make_cover.py \
   --bg /path/to/background.jpg \
   --title "原神精简版本" \
   --subtitle "V1.6 盛夏！海岛？大冒险！" \
@@ -175,16 +175,48 @@ mini-movie-intro-maker/
 - 渲染：`playwright`（含 chromium，见运行环境）
 - 检脸：`opencv-python-headless`（注意：须用 **<5.0**，5.0 移除了 `CascadeClassifier`）+ `models/lbpcascade_animeface.xml`（已内置）
 
+### 运行环境（需 playwright + opencv 的解释器）
+
+本 skill 有两类第三方依赖（`playwright` 渲染、`opencv` 检脸），**不能假定 `python3` 已装好它们**。
+推荐用一个**专用 venv**，再把解释器交给环境变量 `MMM_INTRO_PYTHON`，后续命令统一引用：
+
+```bash
+uv venv ~/.venvs/intro --python 3.11
+# 安装依赖 —— 解释器路径随平台而异：
+uv pip install --python ~/.venvs/intro/bin/python playwright "opencv-python-headless<5.0" numpy pillow           # Linux / macOS
+uv pip install --python ~/.venvs/intro/Scripts/python.exe playwright "opencv-python-headless<5.0" numpy pillow  # Windows
+
+export MMM_INTRO_PYTHON=~/.venvs/intro/bin/python            # Linux / macOS
+# export MMM_INTRO_PYTHON=~/.venvs/intro/Scripts/python.exe  # Windows
+"$MMM_INTRO_PYTHON" -m playwright install chromium           # 仅首次，浏览器约 150MB
+```
+
+验证就绪：`"$MMM_INTRO_PYTHON" -c "import cv2,playwright;print(cv2.__version__)"`（opencv 须 <5.0）。
+
+> **别污染宿主运行环境**：脚本若跑在某个 Agent 宿主（Hermes / Claude 等）自带的解释器下，
+> 不要往它的环境里 `pip install` —— 一律用独立 venv 或系统包管理器。
+
 ## 字体
 
 模板首选字体为 **得意黑（Smiley Sans）**，`font-family: 'Smiley Sans', ...`。
-Linux 安装（供 Playwright/Chromium 通过 fontconfig 识别）：
+字体内部 family 名含 `Smiley Sans` / `得意黑` / `Smiley Sans Oblique`，所以 CSS 写 `'Smiley Sans'` 可被 fontconfig 命中（包内只提供 Oblique 变体，是正常设计）。
+
+Arch / Manjaro（**首选**，系统级、由 pacman 管理，会自动更新 fontconfig 缓存）：
+
+```bash
+yay -S ttf-smiley-sans-bin     # 预编译，无需构建依赖
+fc-match "Smiley Sans"          # 期望命中 SmileySans-Oblique.ttf「得意黑」
+```
+
+> sudo 若需免交互，可先配好 `SUDO_ASKPASS=<你的 askpass 脚本>`，再配合 `yay --sudoflags "-A"`。
+
+其他发行版 / 无 AUR 时，手动装到用户目录（**用 `~/.local/share/fonts`**，XDG 标准；`~/.fonts` 是已弃用旧路径）：
 
 ```bash
 curl -sL -o /tmp/smiley.zip https://github.com/atelier-anchor/smiley-sans/releases/download/v2.0.1/smiley-sans-v2.0.1.zip
 unzip -o /tmp/smiley.zip -d /tmp/smiley_extracted
-mkdir -p ~/.fonts
-cp /tmp/smiley_extracted/SmileySans-Oblique.ttf ~/.fonts/
+mkdir -p ~/.local/share/fonts
+cp /tmp/smiley_extracted/SmileySans-Oblique.ttf ~/.local/share/fonts/
 fc-cache -f
 fc-match "Smiley Sans"   # 期望命中「得意黑」
 ```
