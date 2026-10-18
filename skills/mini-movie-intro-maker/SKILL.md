@@ -55,8 +55,20 @@ context:
   --bg /path/to/background.jpg \
   --title "原神精简版本" \
   --subtitle "V1.6 盛夏！海岛？大冒险！" \
+  [--position top-center] \
   --output output/cover.jpg
 ```
+
+`--position`：强制落点，缺省 `auto`（按避脸 + 内容密度自动选）。
+可选 `top-left|top-center|top-right|mid-left|mid-center|mid-right|bottom-center`。
+
+- **风景类底图（远景、空镜、全屏海报）优先用 `top-center`** —— 自动逻辑的底部优先会把字压在
+  前景景物上（悬崖、船、角色下身），顶部通常是天空/云层，字放上去不挡内容。
+- 只在 `auto` 选得不让用户满意时才显式指定；指定后仍走同一套采样与配色逻辑，
+  颜色会按新落点重新判断，不用手工调色。
+
+> 样例：1.6 主线《振袖秋风问红叶》底图是 PV 雷暴海景，`auto` 落在 bottom-center 压住了
+> 前景悬崖与红帆船，改 `--position top-center` 后文字进云层区，景物全部露出。
 
 > 本 skill 不规定背景图与产出的落盘位置——独立使用时自定；作为 game-storyline-pipeline 一环时，底图由用户每次显式 `--bg` 指定（官方海报，不入库），成品登记为版本级 cover/outro 资产：
 > ```bash
