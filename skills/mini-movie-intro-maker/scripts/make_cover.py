@@ -278,8 +278,11 @@ def _side_rects(side, content_h, max_w):
     return rects, width
 
 
-def analyze_image(bg_path, title):
-    """分析图片：真实检脸 → 按「标题矩形 vs 脸框」交集避让定落点 → 采样该区 → 按有效亮度反推颜色。"""
+def analyze_image(bg_path, title, force_align=None):
+    """分析图片：真实检脸 → 按「标题矩形 vs 脸框」交集避让定落点 → 采样该区 → 按有效亮度反推颜色。
+
+    force_align 非空时跳过自动避脸，直接用指定落点（仍走同一套采样与配色逻辑）。
+    """
     from PIL import Image
     import numpy as np
 
@@ -330,6 +333,9 @@ def analyze_image(bg_path, title):
             eps = max(2.0, (max_ov - min_ov) * 0.15)
             sel = [k for k, v in score.items() if v[0] <= min_ov + eps]
             align = sorted(sel, key=lambda k: (score[k][0], score[k][1], seed % 7))[0]
+    # 3) 显式指定落点，覆盖上面的自动推断
+    if force_align:
+        align = force_align
     vb = align.split("-")[0]
     if vb not in ("top", "mid", "bottom"):
         vb = align.split("-")[1]
@@ -439,7 +445,7 @@ def render_html_to_image(html_path, output_path, width=1920, height=1080, target
         browser.close()
 
 
-def make_cover(bg_path, title, subtitle, output_path):
+def make_cover(bg_path, title, subtitle, output_path, position="auto"):
     """主流程"""
 
     w, h = check_image_size(bg_path)
@@ -449,7 +455,7 @@ def make_cover(bg_path, title, subtitle, output_path):
         print(f"✗ 图片尺寸低于 {MIN_WIDTH}×{MIN_HEIGHT}，请换图", file=sys.stderr)
         sys.exit(1)
 
-    analysis = analyze_image(bg_path, title)
+    analysis = analyze_image(bg_path, title, None if position in ("", "auto") else position)
     print(f"分析: 内容左={analysis['left_ratio']:.1%}, 右={analysis['right_ratio']:.1%}")
     print(f"落点: {analysis['align']}  有效亮度={analysis['effective']:.0f}")
     print(f"字号: 主标题初始={analysis['title_size']}px, 副标题={analysis['sub_size']}px")
@@ -526,6 +532,11 @@ def main():
     parser.add_argument("--title", required=True, help="主标题")
     parser.add_argument("--subtitle", required=True, help="副标题")
     parser.add_argument("--output", default="cover.jpg", help="输出路径")
+    parser.add_argument("--position", default="auto",
+                        choices=["auto", "top-left", "top-center", "top-right",
+                                 "mid-left", "mid-center", "mid-right",
+                                 "bottom-center"],
+                        help="强制落点；默认 auto = 按避脸+内容密度自动选（top-center 常用于不遮挡景色）")
 
     args = parser.parse_args()
 
@@ -533,7 +544,7 @@ def main():
         print(f"错误: 文件不存在: {args.bg}", file=sys.stderr)
         sys.exit(1)
 
-    make_cover(args.bg, args.title, args.subtitle, args.output)
+    make_cover(args.bg, args.title, args.subtitle, args.output, args.position)
 
 
 if __name__ == "__main__":
